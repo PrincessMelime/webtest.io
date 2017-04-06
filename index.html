@@ -310,26 +310,10 @@ function message( session, message ) {
 function safetxt(text) {
     return (''+text).replace( /[<>]/g, '' );
 }
-
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// Problem Occured During Init
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-phone.unable(function(details){
-    console.log("Alert! - Reload Page.");
-    console.log(details);
-    set_icon('remove');
-});
-
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// Debug Output
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-phone.debug(function(details){
-     // console.log(details);
-});
-
-})();
-    
-    
+        
+ // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// XirSysServers Prevent
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-       
 function get_xirsys_servers() {
   var servers;
   $.ajax({
@@ -350,11 +334,24 @@ function get_xirsys_servers() {
   });
   return servers;
 }   
-    
-    
-    
-    
-    
-    </script>
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// Problem Occured During Init
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+phone.unable(function(details){
+    console.log("Alert! - Reload Page.");
+    console.log(details);
+    set_icon('remove');
+});
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// Debug Output
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+phone.debug(function(details){
+     // console.log(details);
+});
+
+})();
+      </script>
 </body>
 </html>
