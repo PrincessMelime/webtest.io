@@ -103,7 +103,7 @@ function phoneStart() {
 		session.message(message);
 	    session.connected(function(session) { 
 	    	video_out.innerHTML="";
-	    	video_out.appendChild(session.video);  
+	    	//video_out.appendChild(session.video);  
 	    });
 	    session.ended(function(session) { video_out.innerHTML=''; });
 	});
