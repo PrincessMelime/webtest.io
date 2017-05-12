@@ -12,7 +12,7 @@ const PHONE = window.PHONE = config => {
     const subkey        = config.subscribe_key || 'demo';
     const autocam       = config.autocam !== false;
     const sessionid     = uuid();
-    const myvideo       = document.createElement('video');
+    //const myvideo       = document.createElement('video');
     const mediaconf     = config.media || { audio : true, video : true };
     const conversations = {};
     let   snapper       = ()=>' ';
@@ -45,11 +45,11 @@ const PHONE = window.PHONE = config => {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Local Microphone and Camera Media (one per device)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    navigator.getUserMedia = 
-        navigator.getUserMedia       ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia    ||
-        navigator.msGetUserMedia;
+    //navigator.getUserMedia = 
+    //    navigator.getUserMedia       ||
+    //    navigator.webkitGetUserMedia ||
+    //    navigator.mozGetUserMedia    ||
+    //    navigator.msGetUserMedia;
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // STUN Server List Configuration (public STUN list)
@@ -97,7 +97,7 @@ const PHONE = window.PHONE = config => {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     let messagecb    = ()=>{};
     let readycb      = ()=>{};
-    let cameracb     = ()=>{};
+  //  let cameracb     = ()=>{};
     let unablecb     = ()=>{};
     let debugcb      = ()=>{};
     let connectcb    = ()=>{};
@@ -106,7 +106,7 @@ const PHONE = window.PHONE = config => {
     let callstatuscb = ()=>{};
     let receivercb   = ()=>{};
 
-    PHONE.camera     = cb => cameracb     = cb;
+ //   PHONE.camera     = cb => cameracb     = cb;
     PHONE.message    = cb => messagecb    = cb;
     PHONE.ready      = cb => readycb      = cb;
     PHONE.unable     = cb => unablecb     = cb;
@@ -186,7 +186,7 @@ const PHONE = window.PHONE = config => {
             talk.message   = cb => {talk.usermsg = cb; return talk};
 
             // Add Local Media Streams Audio Video Mic Camera
-            if (mystream) talk.pc.addStream(mystream);
+           // if (mystream) talk.pc.addStream(mystream);
 
             // Notify of Call Status
             update_conversation( talk, 'connecting' );
@@ -360,7 +360,7 @@ const PHONE = window.PHONE = config => {
     // Grab Local Video Snapshot
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     function snapshots_setup(stream) {
-        let video   = document.createElement('video');
+      //  let video   = document.createElement('video');
         let canvas  = document.createElement('canvas');
         let context = canvas.getContext("2d");
         let snap    = { width: 240, height: 180 };
@@ -439,26 +439,26 @@ const PHONE = window.PHONE = config => {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Prepare Local Media Camera and Mic
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    function startcamera() {
-        navigator.getUserMedia( mediaconf, stream => {
-            if (!stream) return unablecb(stream);
-            mystream = stream;
-            snapshots_setup(stream);
-            onready();
-            cameracb(myvideo);
-        }, info => {
-            debugcb(info);
-            return unablecb(info);
-        } );
+   // function startcamera() {
+   //     navigator.getUserMedia( mediaconf, stream => {
+   //         if (!stream) return unablecb(stream);
+   //         mystream = stream;
+    //        snapshots_setup(stream);
+     //       onready();
+     //       cameracb(myvideo);
+      //  }, info => {
+       //     debugcb(info);
+       //     return unablecb(info);
+        //} );
     }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Stop Camera/Mic
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    function stopcamera() {
-        if (!mystream) return;
-        for (let track of mystream.getTracks()) track.stop();
-    }
+   // function stopcamera() {
+   //     if (!mystream) return;
+   //     for (let track of mystream.getTracks()) track.stop();
+   // }
     
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Initiate Dialing Socket
@@ -594,14 +594,14 @@ const PHONE = window.PHONE = config => {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Main - Setup Dialer Socket and Camera
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    PHONE.startcamera  = startcamera;
-    PHONE.camera.start = startcamera;
-    PHONE.camera.stop  = stopcamera;
-    PHONE.camera.video = () => myvideo;
-    PHONE.camera.ready = PHONE.camera;
+   // PHONE.startcamera  = startcamera;
+   // PHONE.camera.start = startcamera;
+   // PHONE.camera.stop  = stopcamera;
+   // PHONE.camera.video = () => myvideo;
+   // PHONE.camera.ready = PHONE.camera;
 
     // Start Camera Automatically
-    if (autocam) startcamera();
+   // if (autocam) startcamera();
 
     // Start Dailer Socket
     startsubscribe();
