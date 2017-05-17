@@ -54,7 +54,11 @@
 <script src="js/webrtc.js"></script>
 <script type="text/javascript">
 	
-	alert($);
+	$.get('https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf',
+	       function(data){
+		console.log(data);
+		}
+	      );
 
 
 var video_out = document.getElementById("vid-box");
