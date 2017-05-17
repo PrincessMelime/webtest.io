@@ -57,6 +57,13 @@
 	$.get('/webtest.io/pdfPrueba2PageDrive.pdf',
 	       function(data){
 		console.log(data);
+		var reader = new FileReader();
+		reader.onload = function(){
+		      var dataURL = reader.result;
+		      var output = document.getElementById('output');
+		      output.src = dataURL;
+		 };
+		 reader.readAsDataURL('/webtest.io/pdfPrueba2PageDrive.pdf');
 		}
 	      );
 
