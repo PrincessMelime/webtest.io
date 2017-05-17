@@ -165,19 +165,8 @@ function sendMessage(){
 	add_chat("Me: ", chatMsg);
 }
 	
-function sendFile(){
-	var url = "https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf"
-	if (typeof FileReader !== "undefined") {
-    		var size = findSize();
-		
-		
-	}
-}
-	
-	
-
-function findSize() {
-    var size;
+function sendFile() {
+    var url = "https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf"
     var xhr = $.get('/webtest.io/pdfPrueba2PageDrive.pdf',
 	       function(data){
 		console.log(xhr.getResponseHeader("Content-Length"));
