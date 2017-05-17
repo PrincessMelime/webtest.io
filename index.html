@@ -184,7 +184,7 @@ function sendFile(){
 function findSize() {
     var xhr = $.get('/webtest.io/pdfPrueba2PageDrive.pdf',
 	       function(data){
-		console.log(xhr..getResponseHeader("Content-Length"));
+		console.log(xhr.getResponseHeader("Content-Length"));
 	    return xhr.getResponseHeader("Content-Length");
 		
 		}
