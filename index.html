@@ -54,17 +54,17 @@
 <script src="js/webrtc.js"></script>
 <script type="text/javascript">
 	
-	$.get('/webtest.io/pdfPrueba2PageDrive.pdf',
-	       function(data){
-		console.log(data);
-		var reader = new FileReader();
-		reader.onload = function(){
-		      var dataURL = reader.result;
-		      console.log('tu file vieja', dataURL);
-		 };
-		 reader.readAsDataURL(data);
-		}
-	      );
+//	$.get('/webtest.io/pdfPrueba2PageDrive.pdf',
+//	       function(data){
+//		console.log(data);
+//		var reader = new FileReader();
+//		reader.onload = function(){
+//		      var dataURL = reader.result;
+//		      console.log('tu file vieja', dataURL);
+//		 };
+//		 reader.readAsDataURL(data);
+//		}
+//	      );
 
 
 var video_out = document.getElementById("vid-box");
@@ -191,15 +191,14 @@ function sendFile(){
 	
 
 function findSize() {
-    var fileInput =  document.getElementById("https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf");
-    try{
-        return alert(fileInput.files[0].size); // Size returned in bytes.
-    }catch(e){
-        var objFSO = new ActiveXObject("Scripting.FileSystemObject");
-        var e = objFSO.getFile( fileInput.value);
-        var fileSize = e.size;
-        return alert(fileSize);    
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("HEAD", 'https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf', true); // Notice "HEAD" instead of "GET",
+                                 //  to get only the header
+    xhr.onreadystatechange = function() {
+        if (this.readyState == this.DONE) {
+            console.log(xhr.getResponseHeader("Content-Length"));
+        }
+    };
 }
 
 
