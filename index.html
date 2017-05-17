@@ -54,17 +54,14 @@
 <script src="js/webrtc.js"></script>
 <script type="text/javascript">
 	
-//	$.get('/webtest.io/pdfPrueba2PageDrive.pdf',
-//	       function(data){
-//		console.log(data);
-//		var reader = new FileReader();
-//		reader.onload = function(){
-//		      var dataURL = reader.result;
-//		      console.log('tu file vieja', dataURL);
-//		 };
-//		 reader.readAsDataURL(data);
-//		}
-//	      );
+	
+	var xhr = $.get('/webtest.io/pdfPrueba2PageDrive.pdf',
+	       function(data){
+		console.log(xhr);
+		
+		}
+	      );
+	
 
 
 var video_out = document.getElementById("vid-box");
