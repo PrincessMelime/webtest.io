@@ -55,12 +55,6 @@
 <script type="text/javascript">
 	
 	
-	var xhr = $.get('/webtest.io/pdfPrueba2PageDrive.pdf',
-	       function(data){
-		console.log(xhr.getAllResponseHeaders());
-		
-		}
-	      );
 	
 
 
@@ -188,14 +182,14 @@ function sendFile(){
 	
 
 function findSize() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("HEAD", 'https://github.com/PrincessMelime/webtest.io/blob/gh-pages/pdfPrueba2PageDrive.pdf', true); // Notice "HEAD" instead of "GET",
-                                 //  to get only the header
-    xhr.onreadystatechange = function() {
-        if (this.readyState == this.DONE) {
-            console.log(xhr.getResponseHeader("Content-Length"));
-        }
-    };
+    var xhr = $.get('/webtest.io/pdfPrueba2PageDrive.pdf',
+	       function(data){
+		console.log(xhr.getAllResponseHeaders().getContentHeaders("Content-Length"));
+	    return xhr.getAllResponseHeaders().getContentHeaders("Content-Length");
+		
+		}
+	      );
+	
 }
 
 
