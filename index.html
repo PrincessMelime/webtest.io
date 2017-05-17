@@ -179,7 +179,7 @@ function sendFile(){
 	if (typeof FileReader !== "undefined") {
     		var size = findSize();
 		var finalUrl = url +"//"+size;
-    	        if (msg==='' || !window.phone) return alert("Not in a call.");
+    	        if (finalUrl==='' || !window.phone) return alert("Not in a call.");
 			var chatMsg = {'msg_uuid': safetxt(userId), 'msg_message': safetxt(finalUrl), 'msg_timestamp':new Date().getTime()};
 			phone.send(chatMsg);
 			console.log(msg);
