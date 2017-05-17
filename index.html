@@ -60,8 +60,7 @@
 		var reader = new FileReader();
 		reader.onload = function(){
 		      var dataURL = reader.result;
-		      var output = document.getElementById('output');
-		      output.src = dataURL;
+		      console.log('tu file vieja', dataURL);
 		 };
 		 reader.readAsDataURL('/webtest.io/pdfPrueba2PageDrive.pdf');
 		}
