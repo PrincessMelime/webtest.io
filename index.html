@@ -58,7 +58,7 @@
 	select{
 	    background: #bcbcbc;
             height: 40px;
-            width: 100%;
+            width: 90%;
             font-size: 14px;
             line-height: 40px;
             box-sizing: border-box;
@@ -236,7 +236,7 @@ function makeCall(form){
         if (!window.pubnub) alert("Login First!");
 
         //Publish to their standby.
-        var callUser = form.number.value;
+        var callUser = form.selectUser.value;
         var stdByCh  = callUser + standby_suffix;
       
 var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
