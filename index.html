@@ -124,7 +124,7 @@
                         <label for="number">Make Call:</label>
                       <select id="selectUser" ></select>
                         <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
-                        <input type="submit" id="buttonCall" value="Call" disabled ="true"/>
+                        <input type="submit" id="buttonCall" value="Call" disable ="true"/>
                 </form>
                 <button  onclick="end()">End Call</button><br><br>
                 <div id="chat">
@@ -144,7 +144,7 @@
 <script> 
 	$('selectUser').on('change', function (e) {
     		var valueSelected = this.value;
-		if (value!='') document.getElementById("buttonCall").disabled = false;});</script>
+		if (valueSelected!='') $("#buttonCall").attr('disabled':false);});</script>
 <script type="text/javascript">
 
 	
