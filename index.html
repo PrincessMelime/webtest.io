@@ -122,9 +122,11 @@
                 </form>
                 <form name="callForm" id="call" action="#" onsubmit="return makeCall();">
                         <label for="number">Make Call:</label>
-                      <select id="selectUser" ></select>
-			<img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px" vspace="2">
+			<div id="selectedField">
+                     		 <select id="selectUser" ></select>
+				<img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px" vspace="2">
                         <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
+			</div>
                         <input type="submit" id="buttonCall" value="Call"/>
                 </form>
                 <button  onclick="end()">End Call</button><br><br>
