@@ -190,26 +190,28 @@ function login(form){
     return false;
 }
 function listUserConnected(){
-var chan = userId + standby_suffix;
-pubnub.here_now(
-    {
-        channel: chan, 
-        callback : function(m){
-	var options = "";
-	
-		options += '<option value="" disabled selected> Select User to dial!</option>';	
-        console.log(m.uuids);
-	for(x=0; x<m.uuids.length;x++){
-		options += '<option value="' + m.uuids[x] + '">' + m.uuids[x] + '</option>';			
-	}
-	$("#selectUser").html(options);
-        login_form.style.display = 'none';
-        second_part.style.display = 'inline';
- 
-    }
-});
-	
+	var chan = userId + standby_suffix;
+	pubnub.here_now({
+      	  channel: chan, 
+        	callback : function(m){
+			var options = "";
+			console.log(m.uuids);
+			if(m.uuids.length==1){
+				options += '<option value="" disabled selected> No User Connected!</option>';	
+        		}
+			else{
+				options += '<option value="" disabled selected> Select User to dial!</option>';	
+				for(x=0; x<m.uuids.length;x++){
+					if(m.uuids[x]!=userId)options += '<option value="' + m.uuids[x] + '">' + m.uuids[x] + '</option>';	
+				}
+			}
+			$("#selectUser").html(options);
+        		login_form.style.display = 'none';
+        		second_part.style.display = 'inline';
+		}
+	});
 }
+	
 function phoneStart() {
         var phone = window.phone = PHONE({
             number        : userId || "Anonymous", // listen on username line else Anonymous
