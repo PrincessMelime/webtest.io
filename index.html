@@ -122,7 +122,9 @@
                 </form>
                 <form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
                         <label for="number">Make Call:</label>
-                      <select id="selectUser" placeholder="Select user to dial!"  style="width: 300px"></select>
+                      <select id="selectUser" >
+			
+			</select>
                         <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
                         <input type="submit" value="Call"/>
                 </form>
@@ -194,6 +196,8 @@ pubnub.here_now(
         channel: chan, 
         callback : function(m){
 	var options = "";
+	
+		options += '<option value="''" disabled selected>' + "Select User to dial!" + '</option>';	
         console.log(m.uuids);
 	for(x=0; x<m.uuids.length;x++){
 		options += '<option value="' + m.uuids[x] + '">' + m.uuids[x] + '</option>';			
