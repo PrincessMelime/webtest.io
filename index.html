@@ -120,7 +120,7 @@
                 <form name="loginOK" id="loginOK" >
                 <font size="3" color="#55ff5b"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
                 </form>
-                <form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
+                <form name="callForm" id="call" action="#" onsubmit="return makeCall();">
                         <label for="number">Make Call:</label>
                       <select id="selectUser" >
 			
@@ -242,11 +242,11 @@ function phoneStart() {
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
 //jsonCall.put(Constants.JSON_CALL_TIME, System.currentTimeMillis());
-function makeCall(form){
+function makeCall(){
         if (!window.pubnub) alert("Login First!");
 
         //Publish to their standby.
-        var callUser = form.selectUser.value;
+        var callUser = document.getElementById("selectUser").value;
         var stdByCh  = callUser + standby_suffix;
       
 var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
