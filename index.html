@@ -158,6 +158,7 @@ var pub_key = "pub-c-2d1fdf43-c0f7-46cd-b440-5cff44c1d91d";
 var sub_key = "sub-c-ce8170c2-1ad3-11e7-b284-02ee2ddab7fe";
 var standby_suffix = "-stdby";
 var userId = "";
+var callUser="";
 var second_part = document.getElementById("second-part");
 var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
@@ -247,7 +248,7 @@ function makeCall(){
         if (!window.pubnub) alert("Login First!");
 
         //Publish to their standby.
-        var callUser = document.getElementById("selectUser").value;
+        callUser = document.getElementById("selectUser").value;
         var stdByCh  = callUser + standby_suffix;
       
 var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
