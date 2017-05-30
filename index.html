@@ -284,7 +284,7 @@ function sendMessage(){
         var msg = chat_msg.value;
         if (msg==='' || !window.phone) return alert("Not in a call.");
         var chatMsg = {'msg_uuid': safetxt(userId), 'msg_message': safetxt(msg), 'msg_timestamp':new Date().getTime()};
-        phone.send(chatMsg);
+        phone.send(chatMsg,callUser);
         console.log(msg);
         add_chat("Me: ", chatMsg);
 }
