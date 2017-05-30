@@ -247,11 +247,12 @@ function phoneStart() {
 function makeCall(){
         if (!window.pubnub) alert("Login First!");
 
+	video_out.innerHTML="Connecting...";
         //Publish to their standby.
         callUser = document.getElementById("selectUser").value;
         var stdByCh  = callUser + standby_suffix;
       
-var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
+	var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
         console.log("HERE" + callUser + stdByCh);
         window.pubnub.publish({
                 channel:stdByCh,
