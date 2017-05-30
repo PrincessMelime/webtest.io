@@ -184,7 +184,7 @@ pubnub.here_now(
         callback : function(m){
 	var options = "";
         console.log(m.uuids);
-	for(x=0; x<m.uuids.legth;x++){
+	for(x=0; x<m.uuids.length;x++){
 		options += '<option value="' + m.uuids[x] + '">' + m.uuids[x] + '</option>';			
 	}
 	$("#selectUser").html(options);
