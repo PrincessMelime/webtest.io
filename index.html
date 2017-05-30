@@ -171,9 +171,7 @@ function login(form){
                         });
                 console.log("Subscribed and ready!");
                 userLogged.value = userId;
-                login_form.style.display = 'none';
-                second_part.style.display = 'inline';
-            listUserConnected();
+                listUserConnected();
             }
     });
     return false;
@@ -193,6 +191,8 @@ pubnub.here_now(
  
     }
 });
+	login_form.style.display = 'none';
+        second_part.style.display = 'inline';
 }
 function phoneStart() {
         var phone = window.phone = PHONE({
