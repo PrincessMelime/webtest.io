@@ -259,7 +259,7 @@ var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
                 callback:function(m){ console.log(m); }
         });
         if (!window.phone) phoneStart();
-//      window.phone.dial(callUser);
+	phone.dial(callUser);
         return false;
 }
 // {'call_user':'user','call_time':987654321}
