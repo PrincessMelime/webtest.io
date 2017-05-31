@@ -170,6 +170,7 @@ var second_part = document.getElementById("second-part");
 var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var pubnub;
+var inCall = false;
 	
 	
 
@@ -205,7 +206,7 @@ function login(form){
                 console.log("Subscribed and ready!");
                 userLogged.value = userId;
                 listUserConnected();
-            }
+		}
     });
     return false;
 }
@@ -247,7 +248,11 @@ function phoneStart() {
                 video_out.innerHTML="";
                 video_out.appendChild(session.video);
             });
-            session.ended(function(session) { video_out.innerHTML='Call ended.'; });
+            session.ended(function(session) { 
+		    		video_out.innerHTML='Call ended.';
+		    		inCall = false;
+		    
+			 });
         });
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
@@ -265,7 +270,9 @@ function makeCall(){
         window.pubnub.publish({
                 channel:stdByCh,
                 message:msg,
-                callback:function(m){ console.log(m); }
+                callback:function(m){ 
+			inCall=true;
+			console.log(m); }
         });
         if (!window.phone) phoneStart();
 	phone.dial(callUser);
@@ -273,17 +280,20 @@ function makeCall(){
 }
 
 function incomingCall(m){
-        video_out.innerHTML="Connecting...";
+       
+	if(!inCall)
         setTimeout(function(){
                 if (!window.phone) phoneStart();
+		inCall=true;
                 phone.dial(m["call_user"]);
-        }, 2000);
+       		 }, 2000);
 }
 function end(){
    
    if(window.phone){ 
 	   
 	   window.phone.hangup();
+	   inCall=false;
 	   video_out.innerHTML="Call Ended.";
    }	   
 }
