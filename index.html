@@ -183,7 +183,8 @@ function login(form){
         pubnub = window.pubnub = PUBNUB({
         publish_key   : pub_key,
         subscribe_key : sub_key,
-        uuid: userId
+        uuid: userId,
+	ssl : (('https:' == document.location.protocol) ? true : false)
         });
 
         pubnub.subscribe({
