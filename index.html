@@ -289,6 +289,7 @@ function incomingCall(m){
                 if (!window.phone) phoneStart();
 		
                 phone.dial(m["call_user"]);
+		console.log(m["call_user"]);
 		$('#selectUser').val(m["call_user"]);
        		 }, 2000);
 }
