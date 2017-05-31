@@ -246,7 +246,7 @@ function phoneStart() {
                 video_out.innerHTML="";
                 video_out.appendChild(session.video);
             });
-            session.ended(function(session) { video_out.innerHTML=''; });
+            session.ended(function(session) { video_out.innerHTML='Call ended.'; });
         });
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
@@ -270,7 +270,7 @@ function makeCall(){
 	phone.dial(callUser);
         return false;
 }
-// {'call_user':'user','call_time':987654321}
+
 function incomingCall(m){
         video_out.innerHTML="Connecting...";
         setTimeout(function(){
@@ -280,7 +280,11 @@ function incomingCall(m){
 }
 function end(){
    
-   if(window.phone) window.phone.hangup();
+   if(window.phone){ 
+	   
+	   window.phone.hangup();
+	   video_out.innerHTML="Call Ended.";
+   }	   
 }
 function message( session, message ) {
     add_chat( session.number, message );
