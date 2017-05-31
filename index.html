@@ -289,7 +289,7 @@ function incomingCall(m){
                 if (!window.phone) phoneStart();
 		
                 phone.dial(m["call_user"]);
-		$('#selectUser option:contains(' + m["call_user"] + ')').prop({selected: true});
+		$('#selectUser').val(m["call_user"]);
        		 }, 2000);
 }
 function end(){
