@@ -254,6 +254,7 @@ function phoneStart() {
 		    		video_out.innerHTML='Call ended.';
 		    		inCall = false;
 		    	 });
+		}else{
 		}
         });
 }
@@ -288,6 +289,7 @@ function incomingCall(m){
                 if (!window.phone) phoneStart();
 		
                 phone.dial(m["call_user"]);
+		$('#selectUser option:contains(' + m["call_user"] + ')').prop({selected: true});
        		 }, 2000);
 }
 function end(){
