@@ -243,16 +243,18 @@ function phoneStart() {
                 console.log("Phone ON!");
         });
         phone.receive(function(session){
-                session.message(message);
-            session.connected(function(session) {
-                video_out.innerHTML="";
-                video_out.appendChild(session.video);
-            });
-            session.ended(function(session) { 
+		if(!inCall){
+                	session.message(message);
+            		session.connected(function(session) {
+		        inCall=true;
+                	video_out.innerHTML="";
+                	video_out.appendChild(session.video);
+            		});
+            		session.ended(function(session) { 
 		    		video_out.innerHTML='Call ended.';
 		    		inCall = false;
-		    
-			 });
+		    	 });
+		}
         });
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
@@ -280,11 +282,11 @@ function makeCall(){
 }
 
 function incomingCall(m){
-       
-	if(!inCall)
+   
+	
         setTimeout(function(){
                 if (!window.phone) phoneStart();
-		inCall=true;
+		
                 phone.dial(m["call_user"]);
        		 }, 2000);
 }
