@@ -8,9 +8,8 @@
     <script type="text/javascript">
         </script>
 
-  
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <style>
-
         #vid-box{
             color: #bcbcbc;
             height: 400px;
@@ -18,13 +17,10 @@
             top: 20px;
             right: 0;
             width: 400px;
-
         }
-
             #vid-box video{
             width: 400px;
             }
-
         body{
             background: #2d2d2d;
         }
@@ -36,13 +32,11 @@
             box-sizing: border-box;
             position:relative;
         }
-
         label {
             display: block;           
  	    margin: 6px 0 2px;
             color: #bcbcbc;
         }
-
         input[type="text"]{
             background: #bcbcbc;
             border: none;
@@ -67,7 +61,6 @@
             font-family: 'neosansregular', sans-serif;
 	    position:relative;
 	}
-
         input[type="submit"] {
             background: #ff0c44;
             border: 1px solid #ff1148;
@@ -82,7 +75,6 @@
             text-transform: uppercase;
             font-family: 'neosansregular', sans-serif;
         }
-
         button {
             background: #ff0c44;
             border: 1px solid #ff1148;
@@ -96,7 +88,6 @@
             text-transform: uppercase;
             font-family: 'neosansregular', sans-serif;
         }
-
         h1 {
             color: #fff;
             text-align: center;
@@ -156,7 +147,6 @@
 	});
 	</script>
 <script type="text/javascript">
-
 	
 var video_out = document.getElementById("vid-box");
 var chat_box  = document.getElementById("chat-box");
@@ -170,19 +160,16 @@ var second_part = document.getElementById("second-part");
 var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var pubnub;
-//var inCall = false;
-
-
+	
+	
 function login(form){
         userId = form.username.value || "Anonymous";
         var userIdStdBy = userId + standby_suffix;
         pubnub = window.pubnub = PUBNUB({
         publish_key   : pub_key,
         subscribe_key : sub_key,
-        uuid: userId,
-	ssl : (('https:' == document.location.protocol) ? true : false)
+        uuid: userId
         });
-
         pubnub.subscribe({
         channel : userIdStdBy,
         message : incomingCall,
@@ -191,7 +178,6 @@ function login(form){
                                 channel: userIdStdBy,
                                 uuid: userId,
                                 state: {"status" : "Available"},
-
                                 callback: function(m){
                                         form.login_submit.disabled = true;
                                         form.username.style.background="#55ff5b";
@@ -201,7 +187,7 @@ function login(form){
                 console.log("Subscribed and ready!");
                 userLogged.value = userId;
                 listUserConnected();
-		}
+            }
     });
     return false;
 }
@@ -238,26 +224,18 @@ function phoneStart() {
                 console.log("Phone ON!");
         });
         phone.receive(function(session){
-		//if(!inCall){
-                	session.message(message);
-            		session.connected(function(session) {
-		        //inCall=true;
-                	video_out.innerHTML="";
-                	video_out.appendChild(session.video);
-            		});
-            		session.ended(function(session) { 
-		    		video_out.innerHTML='Call ended.';
-		    		//inCall = false;
-		    	 });
-		//}else{
-		//}
+                session.message(message);
+            session.connected(function(session) {
+                video_out.innerHTML="";
+                video_out.appendChild(session.video);
+            });
+            session.ended(function(session) { video_out.innerHTML=''; });
         });
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
 //jsonCall.put(Constants.JSON_CALL_TIME, System.currentTimeMillis());
 function makeCall(){
         if (!window.pubnub) alert("Login First!");
-
 	video_out.innerHTML="Connecting...";
         //Publish to their standby.
         callUser = document.getElementById("selectUser").value;
@@ -268,34 +246,23 @@ function makeCall(){
         window.pubnub.publish({
                 channel:stdByCh,
                 message:msg,
-                callback:function(m){ 
-			//inCall=true;
-			console.log(m); }
+                callback:function(m){ console.log(m); }
         });
         if (!window.phone) phoneStart();
-	window.phone.dial(callUser);
+	phone.dial(callUser);
         return false;
 }
-
+// {'call_user':'user','call_time':987654321}
 function incomingCall(m){
-   
-	
+        video_out.innerHTML="Connecting...";
         setTimeout(function(){
                 if (!window.phone) phoneStart();
-		
                 phone.dial(m["call_user"]);
-		console.log(m["call_user"]);
-		//$('#selectUser').val(m["call_user"]);
-       		 }, 2000);
+        }, 2000);
 }
 function end(){
    
-   if(window.phone){ 
-	   
-	   window.phone.hangup();
-	   //inCall=false;
-	   video_out.innerHTML="Call Ended.";
-   }	   
+   if(window.phone) window.phone.hangup();
 }
 function message( session, message ) {
     add_chat( session.number, message );
@@ -312,7 +279,6 @@ function sendMessage(){
         console.log(msg);
         add_chat("Me: ", chatMsg);
 }
-
 function sendFile() {
     var url = "https://princessmelime.github.io/webtest.io/pdfPrueba2PageDrive.pdf"
     
@@ -336,7 +302,6 @@ function formatTime(millis){
         var a = (Math.floor(h/12)===0) ? "am" : "pm";
         return (h%12)+":"+m+"."+s + " " + a;
 }
-
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
 // XSS Prevent
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
