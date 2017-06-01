@@ -168,7 +168,8 @@ function login(form){
         pubnub = window.pubnub = PUBNUB({
         publish_key   : pub_key,
         subscribe_key : sub_key,
-        uuid: userId
+        uuid: userId,
+	ssl :true
         });
         pubnub.subscribe({
         channel : userIdStdBy,
