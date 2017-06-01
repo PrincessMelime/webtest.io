@@ -105,7 +105,7 @@
 var urlargs         = urlparams();
 var my_number       = PUBNUB.$('my-number');
 var my_link         = PUBNUB.$('my-number-link');
-var number          = urlargs.number || Math.floor(Math.random()*999+1);
+var number          = 'UserWeb';
 my_number.number    = number;
 my_number.innerHTML = ''+my_number.number;
 my_link.href        = location.href.split('?')[0] + '?call=' + number;
