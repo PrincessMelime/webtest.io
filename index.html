@@ -170,12 +170,7 @@ var second_part = document.getElementById("second-part");
 var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var pubnub;
-var inCall = false;
-	
-	
-
-
-
+//var inCall = false;
 
 
 function login(form){
@@ -243,19 +238,19 @@ function phoneStart() {
                 console.log("Phone ON!");
         });
         phone.receive(function(session){
-		if(!inCall){
+		//if(!inCall){
                 	session.message(message);
             		session.connected(function(session) {
-		        inCall=true;
+		        //inCall=true;
                 	video_out.innerHTML="";
                 	video_out.appendChild(session.video);
             		});
             		session.ended(function(session) { 
 		    		video_out.innerHTML='Call ended.';
-		    		inCall = false;
+		    		//inCall = false;
 		    	 });
-		}else{
-		}
+		//}else{
+		//}
         });
 }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
@@ -274,11 +269,11 @@ function makeCall(){
                 channel:stdByCh,
                 message:msg,
                 callback:function(m){ 
-			inCall=true;
+			//inCall=true;
 			console.log(m); }
         });
         if (!window.phone) phoneStart();
-	phone.dial(callUser);
+	window.phone.dial(callUser);
         return false;
 }
 
@@ -290,7 +285,7 @@ function incomingCall(m){
 		
                 phone.dial(m["call_user"]);
 		console.log(m["call_user"]);
-		$('#selectUser').val(m["call_user"]);
+		//$('#selectUser').val(m["call_user"]);
        		 }, 2000);
 }
 function end(){
@@ -298,7 +293,7 @@ function end(){
    if(window.phone){ 
 	   
 	   window.phone.hangup();
-	   inCall=false;
+	   //inCall=false;
 	   video_out.innerHTML="Call Ended.";
    }	   
 }
