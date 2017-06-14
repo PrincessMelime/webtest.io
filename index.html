@@ -183,7 +183,7 @@ function login(form){
 	userId = form.username.value || "Anonymous";
 	var userIdStdBy = userId + standby_suffix;
 	var pubnub = window.pubnub = PUBNUB({                          
-        publish_ley   : pub_key,
+        publish_key   : pub_key,
         subscribe_key : sub_key,
         uuid: userId,
 	ssl:true
