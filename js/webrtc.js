@@ -5,18 +5,20 @@
 // WebRTC Simple Calling API + Mobile
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 var PHONE = window.PHONE = function(config) {
+    config.ssl        = true; // Force HTTPS
     var PHONE         = function(){};
     var pubnub        = PUBNUB(config);
     var pubkey        = config.publish_key   || 'demo';
     var snapper       = function(){ return ' ' }
     var subkey        = config.subscribe_key || 'demo';
-    var autocam       = config.autocam !== false;
     var sessionid     = PUBNUB.uuid();
     var mystream      = null;
     var myvideo       = document.createElement('video');
     var myconnection  = false;
-    var mediaconf     = config.media || { audio : true, video : true };
+    var mediaconf     = config.media || { audio : true, video : false };
     var conversations = {};
+    var oneway        = false
+    var broadcast     = false;
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // RTC Peer Connection Session (one per call)
@@ -29,9 +31,9 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // ICE (many route options per call)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    var IceCandidate =
-        window.mozRTCIceCandidate ||
-        window.RTCIceCandidate;
+    //var IceCandidate =
+    //    window.mozRTCIceCandidate ||
+    //    window.RTCIceCandidate;
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Media Session Description (offer and answer per call)
@@ -53,10 +55,35 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // STUN Server List Configuration (public STUN list)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    var rtcconfig = { iceServers : [
-        {url: "stun:turn03.uswest.xirsys.com"},
-        
-    ] };
+    var rtcconfig = { iceServers :  []};
+    //	{ "url" :
+    //    navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
+    //    navigator.webkitGetUserMedia ? "stun:stun.l.google.com:19302"   :
+    //                                   "stun:23.21.150.121"
+    //}
+    //,   {url: "stun:stun.l.google.com:19302"}
+    //,   {url: "stun:stun1.l.google.com:19302"}
+    //,   {url: "stun:stun2.l.google.com:19302"}
+    //,   {url: "stun:stun3.l.google.com:19302"}
+    //,   {url: "stun:stun4.l.google.com:19302"}
+    //,   {url: "stun:23.21.150.121"}
+    //,   {url: "stun:stun01.sipphone.com"}
+    //,   {url: "stun:stun.ekiga.net"}
+    //,   {url: "stun:stun.fwdnet.net"}
+    //,   {url: "stun:stun.ideasip.com"}
+    //,   {url: "stun:stun.iptel.org"}
+    //,   {url: "stun:stun.rixtelecom.se"}
+    //,   {url: "stun:stun.schlund.de"}
+    //,   {url: "stun:stunserver.org"}
+    //,   {url: "stun:stun.softjoys.com"}
+    //,   {url: "stun:stun.voiparound.com"}
+    //,   {url: "stun:stun.voipbuster.com"}
+    //,   {url: "stun:stun.voipstunt.com"}
+    //,   {url: "stun:stun.voxgratia.org"}
+//, {url: "stun:stun.xten.com"}
+
+	//] };
+
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Custom STUN Options
@@ -81,6 +108,7 @@ var PHONE = window.PHONE = function(config) {
     var reconnectcb  = function(){};
     var callstatuscb = function(){};
     var receivercb   = function(){};
+    var datachannelcb= function(){};
 
     PHONE.message    = function(cb) { messagecb    = cb };
     PHONE.ready      = function(cb) { readycb      = cb };
@@ -91,6 +119,7 @@ var PHONE = window.PHONE = function(config) {
     PHONE.disconnect = function(cb) { disconnectcb = cb };
     PHONE.reconnect  = function(cb) { reconnectcb  = cb };
     PHONE.receive    = function(cb) { receivercb   = cb };
+    PHONE.datachannel= function(cb) { datachannelcb= cb };
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Add/Get Conversation - Creates a new PC or Returns Existing PC
@@ -116,7 +145,7 @@ var PHONE = window.PHONE = function(config) {
             talk.pc.onaddstream    = config.onaddstream || onaddstream;
             talk.pc.onicecandidate = onicecandidate;
             talk.pc.number         = number;
-
+            
             // Disconnect and Hangup
             talk.hangup = function(signal) {
                 if (talk.closed) return;
@@ -131,17 +160,17 @@ var PHONE = window.PHONE = function(config) {
                 talk.pc.close();
                 close_conversation(number);
             };
-            
-            // Stop Audio/Video Stream
-            talk.stop = function() {
-                if (mystream) mystream.stop();
-                return mystream;
-            };
 
             // Sending Messages
             talk.send = function(message) {
                 transmit( number, { usermsg : message } );
             };
+            
+            talk.sendData = function(message){
+	            if (!talk.datachannel) return console.log("Need to configure datachannel in settings.");
+				if (typeof(message)==='object') return talk.datachannel.send(JSON.stringify(message));
+	            talk.datachannel.send(message);
+            }
 
             // Sending Stanpshots
             talk.snap = function() {
@@ -153,7 +182,7 @@ var PHONE = window.PHONE = function(config) {
                 return { data : pic, image : img };
             };
             talk.snapi = setInterval( function() {
-                if (talk.imgsent++ > 1) return clearInterval(talk.snapi);
+                if (talk.imgsent++ > 5) return clearInterval(talk.snapi);
                 talk.snap();
             }, 1500 );
             talk.snap();
@@ -165,7 +194,8 @@ var PHONE = window.PHONE = function(config) {
             talk.message   = function(cb) {talk.usermsg = cb; return talk};
 
             // Add Local Media Streams Audio Video Mic Camera
-            if (mystream) talk.pc.addStream(mystream);
+            //  If answering and oneway streaming, do not attach stream
+ 	    if (mystream) talk.pc.addStream(mystream);   // Add null here on the receiving end of streaming to go one-way.
 
             // Notify of Call Status
             update_conversation( talk, 'connecting' );
@@ -259,6 +289,13 @@ var PHONE = window.PHONE = function(config) {
             talk.send(message);
         } );
     };
+    
+     PHONE.sendData = function( message, number ) {
+        if (number) return get_conversation(number).sendData(message);
+        PUBNUB.each( conversations, function( number, talk ) {
+            talk.sendData(message);
+        } );
+    };
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // End Call - Close All Calls or a Specific Call
@@ -269,6 +306,13 @@ var PHONE = window.PHONE = function(config) {
             talk.hangup();
         } );
     };
+    
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Expose local stream and pubnub object
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    PHONE.mystream = mystream;
+    PHONE.pubnub   = pubnub;
+    PHONE.oneway   = oneway;
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Auto-hangup on Leave
@@ -282,7 +326,7 @@ var PHONE = window.PHONE = function(config) {
             var packet   = { hangup:true };
             var message  = { packet:packet, id:sessionid, number:mynumber };
             var client   = new XMLHttpRequest();
-            var url      = 'https://pubsub.pubnub.com/publish/'
+            var url      = 'http://pubsub.pubnub.com/publish/'
                            + pubkey + '/'
                            + subkey + '/0/'
                            + number + '/0/'
@@ -309,7 +353,7 @@ var PHONE = window.PHONE = function(config) {
         video.width  = snap.width;
         video.height = snap.height;
         video.src    = URL.createObjectURL(stream);
-        video.volume = 0.0;
+        video.volume = 1.0;
         video.play();
 
         // Canvas Settings
@@ -337,11 +381,30 @@ var PHONE = window.PHONE = function(config) {
         var talk   = get_conversation(number);
 
         vid.setAttribute( 'autoplay', 'autoplay' );
+        vid.setAttribute( 'data-number', number );
         vid.src = URL.createObjectURL(stream);
 
         talk.video = vid;
         talk.connect(talk);
     }
+    
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // Data Channel Configurations
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+	function setChannelEvents(datachannel){
+		datachannel.onmessage = function(m){
+			try { 
+				var msg = JSON.parse(m.data); 
+				datachannelcb(msg);
+			} catch (e) { 
+				datachannelcb(m.data);
+			}
+		};
+		datachannel.onopen    = function() {debugcb("------ DATACHANNEL OPENED ------")};
+		datachannel.onclose   = function() {debugcb("------ DATACHANNEL CLOSED ------")};
+		datachannel.onerror   = function() {debugcb("------ DATACHANNEL ERROR! ------")};
+	}
+    function ondatachannel(e){ console.log("Pass ondataconfig function in phone configurations object."); }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // On ICE Route Candidate Discovery
@@ -355,6 +418,7 @@ var PHONE = window.PHONE = function(config) {
     // Listen For New Incoming Calls
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     function subscribe() {
+	    console.log("Subscribed to " + config.number);
         pubnub.subscribe({
             restore    : true,
             channel    : config.number,
@@ -370,8 +434,8 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     function onready(subscribed) {
         if (subscribed) myconnection = true;
-        if (!(mystream && myconnection)) return;
-
+        if (!((mystream || oneway) && myconnection)) return;
+        
         connectcb();
         readycb();
     }
@@ -379,24 +443,24 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Prepare Local Media Camera and Mic
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    function startcamera() {
+    function getusermedia() { //Do something if not requesting any media?
+        if (oneway && !broadcast){
+	        if (!PeerConnection){ return unablecb(); }
+	        onready();
+	        subscribe();
+            return;
+        }
         navigator.getUserMedia( mediaconf, function(stream) {
-            if (!stream) return unablecb(stream);
             mystream = stream;
+	    var audiotrack = stream.getAudioTracks();
+            phone.mystream = stream;
             snapshots_setup(stream);
-            if (autocam) startsubscribe();
+            onready();
+            subscribe();
         }, function(info) {
             debugcb(info);
             return unablecb(info);
         } );
-    }
-    
-    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    // Initiate Dialing Socket
-    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    function startsubscribe() {
-        onready();
-        subscribe();
     }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -426,8 +490,8 @@ var PHONE = window.PHONE = function(config) {
         debugcb(message);
 
         // Get Call Reference
-        var talk = get_conversation(message.number);
-
+        var talk = get_conversation(message.number, true);
+        
         // Ignore if Closed
         if (talk.closed) return;
 
@@ -443,7 +507,7 @@ var PHONE = window.PHONE = function(config) {
         // If Hangup Request
         if (message.packet.hangup) return talk.hangup(false);
 
-        // If Peer Calling Inbound (Incoming)
+        // If Peer Calling Inbound (Incoming) - Can determine stream + receive here.
         if ( message.packet.sdp && !talk.received ) {
             talk.received = true;
             receivercb(talk);
@@ -472,8 +536,10 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     function add_sdp_offer(message) {
         // Get Call Reference
-        var talk = get_conversation(message.number);
+        var talk = get_conversation(message.number, message.packet.type=='answer');
         var pc   = talk.pc;
+	//var pc = new RTCPeerConnection(rtcconfig);
+
         var type = message.packet.type == 'offer' ? 'offer' : 'answer';
 
         // Deduplicate SDP Offerings/Answers
@@ -515,22 +581,18 @@ var PHONE = window.PHONE = function(config) {
         var pc   = talk.pc;
 
         // Add ICE Candidate Routes
-        pc.addIceCandidate(
-            new IceCandidate(message.packet),
-            debugcb,
-            debugcb
-        );
+//        pc.addIceCandidate(
+//            new IceCandidate(message.packet),
+//            debugcb,
+//            debugcb
+//        );
     }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Main - Request Camera and Mic
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    PHONE.startcamera = startcamera;
-    if (autocam) startcamera();
-    else         startsubscribe();
+    getusermedia();
 
     return PHONE;
 };
-
-
 })();
