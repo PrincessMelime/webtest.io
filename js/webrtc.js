@@ -589,11 +589,11 @@ var PHONE = window.PHONE = function(config) {
         var pc   = talk.pc;
 
         // Add ICE Candidate Routes
-//        pc.addIceCandidate(
-//            new IceCandidate(message.packet),
-//            debugcb,
-//            debugcb
-//        );
+        pc.addIceCandidate(
+            new IceCandidate(message.packet),
+            debugcb,
+            debugcb
+       );
     }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
