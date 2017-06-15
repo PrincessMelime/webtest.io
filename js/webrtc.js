@@ -56,7 +56,7 @@ var PHONE = window.PHONE = function(config) {
     // STUN Server List Configuration (public STUN list)
     //{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}
    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    var rtcconfig = { iceServers :  [;
+    var rtcconfig = { iceServers :  [
     
     	{ "url" :
         navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
