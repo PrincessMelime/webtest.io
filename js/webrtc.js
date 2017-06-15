@@ -31,9 +31,9 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // ICE (many route options per call)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    //var IceCandidate =
-    //    window.mozRTCIceCandidate ||
-    //    window.RTCIceCandidate;
+    var IceCandidate =
+        window.mozRTCIceCandidate ||
+        window.RTCIceCandidate;
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // Media Session Description (offer and answer per call)
@@ -55,7 +55,8 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // STUN Server List Configuration (public STUN list)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    var rtcconfig = { iceServers :  [{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}]};
+    var rtcconfig = { iceServers :  []};
+    //{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}
     //	{ "url" :
     //    navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
     //    navigator.webkitGetUserMedia ? "stun:stun.l.google.com:19302"   :
