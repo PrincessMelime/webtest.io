@@ -179,8 +179,9 @@ var userlogged = document.getElementById("userLogged");
 var userId = "";
 var callUser="";
 var inCall=false;
-function login(form){
-	userId = form.username.value || "Anonymous";
+login("UserTest");	
+function login(value){
+	userId = value || "Anonymous";
 	var userIdStdBy = userId + standby_suffix;
 	var pubnub = window.pubnub = PUBNUB({                          
         publish_key   : pub_key,
@@ -202,7 +203,6 @@ function login(form){
 					form.username.style.background="#55ff5b";
 					console.log(JSON.stringify(m));
 					//phoneStart();
-
 				}
 			});
 	        console.log("Subscribed and ready!");
@@ -213,7 +213,7 @@ function login(form){
 	    }
     });
     return false;
-}
+}	
 
 function listUserConnected(){
 	var chan = userId + standby_suffix;
