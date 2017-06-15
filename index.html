@@ -50,7 +50,7 @@
         label {
             display: block;
             margin: 6px 0 2px;
-            color: #bcbcbc;
+            color: #2d2d2d;
         }
 
         input[type="text"]{
@@ -140,13 +140,13 @@
 		<font size="3" color="#55ff5b"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
 		</form>
 		<form name="callForm" id="call">
-			<label for="number">Make Call:</label>
+			Make Call:
 			<div id="selectedField">
                      	   <select id="selectUser" ></select>
-			   <img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px">
+			   <img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px"><br>
                            <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
 			</div>
-			<button id="buttonCall" onclick="makeCall(this)" >Call</button>
+			<button id="buttonCall" onclick="makeCall(this)" >Call</button><br><br>
 		</form>
 		<button  onclick="end()">End Call</button><br><br>
 		<div id="chat">
