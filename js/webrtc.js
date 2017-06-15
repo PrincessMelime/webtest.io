@@ -55,7 +55,7 @@ var PHONE = window.PHONE = function(config) {
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // STUN Server List Configuration (public STUN list)
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-    var rtcconfig = { iceServers :  []};
+    var rtcconfig = { iceServers :  [{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}]};
     //{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}
     //	{ "url" :
     //    navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
