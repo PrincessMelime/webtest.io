@@ -122,7 +122,7 @@
     </style>
     
 </head>
-<body>
+<body onload="login('CW')">
 	<div id="header">
 		<h1>STREAMING WITH INTEL GLASS</h1>
 	</div>
@@ -130,12 +130,12 @@
 		<div id="vid-box">
  		   <!-- <i id="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>-->
 		</div>
-		<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+	<!--	<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
 		    <label for="username">User Name:</label>
 		    <input type="text" name="username" id="username" placeholder="Pick a username!"  size="32"/>
 		    <input type="submit" name="login_submit" value="Log In">
-		</form>
-		<div id="second-part"  style="display:none">
+		</form> -->
+		<!--<div id="second-part"  style="display:none">-->
 		<form name="loginOK" id="loginOK" >
 		<font size="3" color="#55ff5b"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
 		</form>
@@ -177,14 +177,14 @@ var chat_msg  = document.getElementById("chat-msg");
 var pub_key = "pub-c-2d1fdf43-c0f7-46cd-b440-5cff44c1d91d";
 var sub_key = "sub-c-ce8170c2-1ad3-11e7-b284-02ee2ddab7fe";
 var standby_suffix = "-stdby";
-var second_part = document.getElementById("second-part");
-var login_form = document.getElementById("login");
+//var second_part = document.getElementById("second-part");
+//var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var userId = "";
 var callUser="";
 var inCall=false;
-function login(form){
-	userId = form.username.value || "Anonymous";
+function login(value){
+	userId = value || "Anonymous";
 	var userIdStdBy = userId + standby_suffix;
 	var pubnub = window.pubnub = PUBNUB({                          
         publish_key   : pub_key,
@@ -202,17 +202,17 @@ function login(form){
 				uuid: userId,
 				state: {"status" : "Available"},
 				callback: function(m){
-					form.login_submit.disabled = true;
-					form.username.style.background="#55ff5b";
+					//form.login_submit.disabled = true;
+					//form.username.style.background="#55ff5b";
 					console.log(JSON.stringify(m));
-					//phoneStart();
+					phoneStart();
 
 				}
 			});
 	        console.log("Subscribed and ready!");
 	        userLogged.value = userId;
-	        login_form.style.display = 'none';  
-		second_part.style.display = 'inline';	 
+	        //login_form.style.display = 'none';  
+		//second_part.style.display = 'inline';	 
 		listUserConnected();
 	    }
     });
@@ -236,8 +236,8 @@ function listUserConnected(){
 				}
 			}
 			$("#selectUser").html(options);
-        		login_form.style.display = 'none';
-        		second_part.style.display = 'inline';
+        		//login_form.style.display = 'none';
+        		//second_part.style.display = 'inline';
 		}
 	});
 }
