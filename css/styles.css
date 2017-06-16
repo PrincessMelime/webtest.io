@@ -1455,7 +1455,7 @@ a {
   width: 100%;
   background: #fff; }
   .tabs .logo {
-    background: url("/images/logo.png") no-repeat center center scroll transparent;
+    background: url("/img/logo.png") no-repeat center center scroll transparent;
     height: 50px;
     width: 150px;
     position: absolute;
