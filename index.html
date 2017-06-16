@@ -40,7 +40,7 @@
         }
        div#rtc-demo {
             width: 800px;
-            margin: 0 auto;
+            margin-left: 8px;
             font-family: arial, helvetica, sans-serif;
 	    padding-right: 420px;
  	    box-sizing: border-box;
@@ -66,6 +66,16 @@
 		font-family: arial, helvetica, sans-serif;
 		color: #fff;
 		font-size: 14px;
+	}
+	div#loginOK{
+		
+		background-color:#d8404b;
+		font-family: arial, helvetica, sans-serif;
+		color: #fff;
+		font-size: 14px;
+	    
+	    
+	    
 	}
      //   label {
      //       display: block;
@@ -155,9 +165,9 @@
 		    <input type="submit" name="login_submit" value="Log In">
 		</form>-->
 		<div id="second-part"  style="display:none">
-		<form name="loginOK" id="loginOK" >
-		<font size="3" background-color="#d8404b" color="#2d2d2d"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
-		</form><br>
+		<div id="loginOK" >
+			<font size="3""><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
+		</div><br>
 		<form name="callForm" id="call">
 			Make Call:
 			<div id="selectedField" style="margin:2px;">
