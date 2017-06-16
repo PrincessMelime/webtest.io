@@ -139,15 +139,15 @@
 		<form name="loginOK" id="loginOK" >
 		<font size="3" color="#55ff5b"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
 		</form>
-		<form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
+		<!--<form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">-->
 			<label for="number">Make Call:</label>
 			<div id="selectedField">
                      	   <select id="selectUser" ></select>
 			   <img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px">
                            <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
 			</div>
-			<input type="submit" id="buttonCall" value="Call"/>
-		</form>
+			<buton id="buttonCall" onclick=" return makeCall(this)"/>
+		<--</form>-->
 		<button  onclick="end()">End Call</button><br><br>
 		<div id="chat">
 			Peer Chat:
