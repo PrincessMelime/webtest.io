@@ -1,3 +1,4 @@
+
 (function(){
 
 
@@ -54,43 +55,35 @@ var PHONE = window.PHONE = function(config) {
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     // STUN Server List Configuration (public STUN list)
-    //{"url":"turn:35.161.239.237:13478","credential":"concrema","username":"flan"}
-   // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     var rtcconfig = { iceServers :  []};
-		     
-		     //[{"url":"turn:35.161.239.237:1378","credential":"meli","username":"melisa"},
-			//	    {"url":"turn:35.161.239.237:13478","credential":"meli","username":"melisa"},
-			//	    {"url":"turn:35.161.239.237:13479","credential":"meli","username":"melisa"},
-			//	    {"url":"turn:35.161.239.237:13480","credential":"meli","username":"melisa"},
-			//	    {"url":"turn:35.161.239.237:13481","credential":"meli","username":"melisa"}]};
-    
-  //  	{ "url" :
-  //      navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
-  //      navigator.webkitGetUserMedia ? "stun:stun.l.google.com:19302"   :
-  //                                     "stun:23.21.150.121"
-  //  }
-  //  ,   {url: "stun:stun.l.google.com:19302"}
-  //  ,   {url: "stun:stun1.l.google.com:19302"}
-  //  ,   {url: "stun:stun2.l.google.com:19302"}
-  //  ,   {url: "stun:stun3.l.google.com:19302"}
-  //  ,   {url: "stun:stun4.l.google.com:19302"}
-  //  ,   {url: "stun:23.21.150.121"}
- //   ,   {url: "stun:stun01.sipphone.com"}
- //   ,   {url: "stun:stun.ekiga.net"}
-  //  ,   {url: "stun:stun.fwdnet.net"}
-  //  ,   {url: "stun:stun.ideasip.com"}
-  //  ,   {url: "stun:stun.iptel.org"}
-  //  ,   {url: "stun:stun.rixtelecom.se"}
-   // ,   {url: "stun:stun.schlund.de"}
-  //  ,   {url: "stun:stunserver.org"}
-   // ,   {url: "stun:stun.softjoys.com"}
-   // ,   {url: "stun:stun.voiparound.com"}
-   // ,   {url: "stun:stun.voipbuster.com"}
-   // ,   {url: "stun:stun.voipstunt.com"}
-   // ,   {url: "stun:stun.voxgratia.org"}
+    //	{ "url" :
+    //    navigator.mozGetUserMedia    ? "stun:stun.services.mozilla.com" :
+    //    navigator.webkitGetUserMedia ? "stun:stun.l.google.com:19302"   :
+    //                                   "stun:23.21.150.121"
+    //}
+    //,   {url: "stun:stun.l.google.com:19302"}
+    //,   {url: "stun:stun1.l.google.com:19302"}
+    //,   {url: "stun:stun2.l.google.com:19302"}
+    //,   {url: "stun:stun3.l.google.com:19302"}
+    //,   {url: "stun:stun4.l.google.com:19302"}
+    //,   {url: "stun:23.21.150.121"}
+    //,   {url: "stun:stun01.sipphone.com"}
+    //,   {url: "stun:stun.ekiga.net"}
+    //,   {url: "stun:stun.fwdnet.net"}
+    //,   {url: "stun:stun.ideasip.com"}
+    //,   {url: "stun:stun.iptel.org"}
+    //,   {url: "stun:stun.rixtelecom.se"}
+    //,   {url: "stun:stun.schlund.de"}
+    //,   {url: "stun:stunserver.org"}
+    //,   {url: "stun:stun.softjoys.com"}
+    //,   {url: "stun:stun.voiparound.com"}
+    //,   {url: "stun:stun.voipbuster.com"}
+    //,   {url: "stun:stun.voipstunt.com"}
+    //,   {url: "stun:stun.voxgratia.org"}
 //, {url: "stun:stun.xten.com"}
 
-//	] };
+	//] };
 
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -334,7 +327,7 @@ var PHONE = window.PHONE = function(config) {
             var packet   = { hangup:true };
             var message  = { packet:packet, id:sessionid, number:mynumber };
             var client   = new XMLHttpRequest();
-            var url      = 'https://pubsub.pubnub.com/publish/'
+            var url      = 'http://pubsub.pubnub.com/publish/'
                            + pubkey + '/'
                            + subkey + '/0/'
                            + number + '/0/'
@@ -593,7 +586,7 @@ var PHONE = window.PHONE = function(config) {
             new IceCandidate(message.packet),
             debugcb,
             debugcb
-       );
+        );
     }
 
     // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
