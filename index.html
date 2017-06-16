@@ -125,7 +125,7 @@
   		width: 100%;
 		    background: #fff;}
   tabs_logo {
-    background: url("/images/logo.png") no-repeat center center scroll transparent;
+    background: url("img/logo.png") no-repeat center center scroll transparent;
     height: 50px;
     width: 150px;
     position: absolute;
@@ -152,11 +152,11 @@
 		<div id="vid-box">
  		   <!-- <i id="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>-->
 		</div>
-		<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+	<!--	<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
 		    <label for="username">User Name:</label>
 		    <input type="text" name="username" id="username" placeholder="Pick a username!"  size="32"/>
 		    <input type="submit" name="login_submit" value="Log In">
-		</form>
+		</form>-->
 		<div id="second-part"  style="display:none">
 		<form name="loginOK" id="loginOK" >
 		<font size="3" color="#2d2d2d"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
@@ -200,7 +200,7 @@ var pub_key = "pub-c-2d1fdf43-c0f7-46cd-b440-5cff44c1d91d";
 var sub_key = "sub-c-ce8170c2-1ad3-11e7-b284-02ee2ddab7fe";
 var standby_suffix = "-stdby";
 var second_part = document.getElementById("second-part");
-var login_form = document.getElementById("login");
+//var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var userId = "";
 var callUser="";
@@ -233,7 +233,7 @@ function login(value){
 			});
 	        console.log("Subscribed and ready!");
 	        userLogged.value = userId;
-	        login_form.style.display = 'none';  
+	       // login_form.style.display = 'none';  
 		second_part.style.display = 'inline';	 
 		listUserConnected();
 	    }
