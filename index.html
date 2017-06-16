@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>STREAMING WITH INTEL GLASS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript">
+   	</script>
+    
+    <style>
+
+        #vid-box{
+            color: #bcbcbc;
+	    height: 400px;
+    	    position: absolute;
+   	    top: 20px;
+   	    right: 0;
+    	    width: 400px;
+	  //  border: 1px solid #bcbcbc ;
+	    box-sizing: border-box;
+        }
+        
+	#vid-box video{
+            width: 400px;
+	}
+//	#loading{
+//	    top: 50%;
+//    	    left: 50%;	
+//  	    margin-left: -32px;
+//    	    position: absolute;
+//	    margin-top: -32px;
+//	}
+
+        body{
+            background: #eeede9;
+ 	          color: #2d2d2d;
+        }
+       div#rtc-demo {
+            width: 800px;
+            margin: 0 auto;
+            font-family: 'neosansregular', sans-serif;
+	    padding-right: 420px;
+ 	    box-sizing: border-box;
+	    position:relative;
+      background: #eeede9;
+ 	    color: #2d2d2d;
+        }
+
+        label {
+            display: block;
+            margin: 6px 0 2px;
+            color: #2d2d2d;
+        }
+
+        input[type="text"]{
+            background: #bcbcbc;
+            border: none;
+            height: 40px;
+            width: 100%;
+            font-size: 14px;
+            line-height: 40px;
+            box-sizing: border-box;
+            padding-left: 10px;
+            border-bottom: 1px solid #000000;
+            font-family: 'neosansregular', sans-serif;
+        }
+
+	select{
+	    background: #bcbcbc;
+            height: 40px;
+            width: calc(100% - 40px);
+            font-size: 14px;
+            line-height: 40px;
+            box-sizing: border-box;
+            padding-left: 10px;
+            border-bottom: 1px solid #000000;
+            font-family: 'neosansregular', sans-serif;
+	    position:relative;
+	}
+
+        input[type="submit"] {
+            background: #ff0c44;
+            border: 1px solid #ff1148;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0px 1px 1px #000;
+            box-shadow: 0 20px 30px rgba(17, 135, 226, 0.2) inset;
+            text-transform: uppercase;
+            font-family: 'neosansregular', sans-serif;
+        }
+
+        button {
+           font-size: 16px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            text-align: center;
+    	    white-space: nowrap;
+    	    border: 0 none;
+    	    border-radius: 4px;
+    	    font-weight: 500;
+    	    line-height: 1.3;
+    	    color: #FFFFFF;
+    	    background: #666;
+	    font-family: 'neosansregular', sans-serif;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-family: 'neosansregular', sans-serif;
+            font-size: 20px;
+        }
+
+	img{
+    	    margin-top: 5px;
+    	    float: right;
+	}
+    </style>
+    
+</head>
+<body>
+	<div id="header">
+		<h1>STREAMING WITH INTEL GLASS</h1>
+	</div>
+	<div id="rtc-demo">
+		<div id="vid-box">
+ 		   <!-- <i id="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>-->
+		</div>
+		<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+		    <label for="username">User Name:</label>
+		    <input type="text" name="username" id="username" placeholder="Pick a username!"  size="32"/>
+		    <input type="submit" name="login_submit" value="Log In">
+		</form>
+		<div id="second-part"  style="display:none">
+		<form name="loginOK" id="loginOK" >
+		<font size="3" color="#55ff5b"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
+		</form>
+		<form name="callForm" id="call" action="#" onsubmit="return makeCall(this);">
+			<label for="number">Make Call:</label>
+			<div id="selectedField">
+                     	   <select id="selectUser" ></select>
+			   <img src ="https://princessmelime.github.io/webtest.io/img/reload.svg"  onclick =listUserConnected() width="30px">
+                           <!--<input type="text" name="number" placeholder="Enter user to dial!" size="32"/>-->
+			</div>
+			<input type="submit" id="buttonCall" value="Call"/>
+		</form>
+		<button  onclick="end()">End Call</button><br><br>
+		<div id="chat">
+			Peer Chat:
+			<input type="text" id="chat-msg" placeholder="Enter a message..." size="32" style="margin:2px;" />
+			<button onclick="sendMessage()">Send</button>
+                        <button onclick="sendFile()">Send File</button>
+			<div id="chat-box">[<i>Chat will appear here</i>]</div>
+		</div>
+		</div>
+	</div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+<script src="webrtc.js"></script>
+<script> 
+	$("#buttonCall").attr({'disabled':true});
+        //$("#vid-box").attr("style", "visibility: hidden");
+	$('#selectUser').on('change', function (e) {
+    		$("#buttonCall").removeAttr('disabled');
+	});
+</script>
+<script type="text/javascript">
+var video_out = document.getElementById("vid-box");
+var chat_box  = document.getElementById("chat-box");
+var chat_msg  = document.getElementById("chat-msg");
+var pub_key = "pub-c-2d1fdf43-c0f7-46cd-b440-5cff44c1d91d";
+var sub_key = "sub-c-ce8170c2-1ad3-11e7-b284-02ee2ddab7fe";
+var standby_suffix = "-stdby";
+var second_part = document.getElementById("second-part");
+var login_form = document.getElementById("login");
+var userlogged = document.getElementById("userLogged");
+var userId = "";
+var callUser="";
+var inCall=false;
+function login(form){
+	userId = form.username.value || "Anonymous";
+	var userIdStdBy = userId + standby_suffix;
+	var pubnub = window.pubnub = PUBNUB({                          
+        publish_key   : pub_key,
+        subscribe_key : sub_key,
+        uuid: userId,
+	ssl:true
+	});
+	
+	pubnub.subscribe({                                     
+        channel : userIdStdBy,
+        message : incomingCall,
+        connect: function(e){ 
+	        pubnub.state({
+				channel: userIdStdBy,
+				uuid: userId,
+				state: {"status" : "Available"},
+				callback: function(m){
+					form.login_submit.disabled = true;
+					form.username.style.background="#55ff5b";
+					console.log(JSON.stringify(m));
+					//phoneStart();
+
+				}
+			});
+	        console.log("Subscribed and ready!");
+	        userLogged.value = userId;
+	        login_form.style.display = 'none';  
+		second_part.style.display = 'inline';	 
+		listUserConnected();
+	    }
+    });
+    return false;
+}
+
+function listUserConnected(){
+	var chan = userId + standby_suffix;
+	pubnub.here_now({
+      	  channel: chan, 
+        	callback : function(m){
+			var options = "";
+			console.log(m.uuids);
+			if(m.uuids.length<=1){
+				options += '<option value="" disabled selected> No User Connected!</option>';	
+        		}
+			else{
+				options += '<option value="" disabled selected> Select User to dial!</option>';	
+				for(x=0; x<m.uuids.length;x++){
+					if(m.uuids[x]!=userId)options += '<option value="' + m.uuids[x] + '">' + m.uuids[x] + '</option>';	
+				}
+			}
+			$("#selectUser").html(options);
+        		login_form.style.display = 'none';
+        		second_part.style.display = 'inline';
+		}
+	});
+}
+
+function phoneStart() {
+	
+	var serversXys = get_xirsys_servers();
+	var serverXys= [];
+	//serverXys.push({"url":"turn:flan@35.161.239.237:13478","credential":"concrema"});
+	//serverXys.push({url:'turn:https://poc.cw.inteliot.org:13478?transport=tcp',username:'flan',credential:'concrema'});
+
+ 
+	var phone = window.phone = PHONE({
+	    number        : userId || "Anonymous", // listen on username line else Anonymous
+	    publish_key   : pub_key, // Your Pub Key
+	    subscribe_key : sub_key, // Your Sub Key
+	    servers : serversXys,
+	//    onaddstream:addRemoteStream
+	});	
+	phone.ready(function(){
+		console.log("Phone ON!");
+	});
+	phone.receive(function(session){
+		session.message(message);
+	    session.connected(function(session) { 
+		callUser= session.number;
+		//window.phone.dial(callUser);
+		inCall=true;
+	    	video_out.innerHTML="";
+	    	video_out.appendChild(session.video);  
+	    });
+	    session.ended(function(session) {
+		if(inCall){ 
+			video_out.innerHTML='Call ended by Glasses'; 
+			inCall=false;
+		}});
+	
+	});
+}
+
+//Adds the remote users video feed to our remote video window.
+    function addRemoteStream( obj ){
+	var url = window.URL.createObjectURL(obj.stream);
+	inCall=true;
+        video_out.innerHTML="";
+
+        $("#vid-box").attr( "src", window.URL.createObjectURL(obj.stream) );
+    }
+//jsonCall.put(Constants.JSON_CALL_USER, username);
+//jsonCall.put(Constants.JSON_CALL_TIME, System.currentTimeMillis());
+
+function makeCall(form){
+	if (!window.pubnub) alert("Login First!");
+	//$("#vid-box").removeAttr('style');
+
+	video_out.innerHTML="Connecting...";
+	//Publish to their standby.
+	 callUser = document.getElementById("selectUser").value;
+	var stdByCh  = callUser + standby_suffix;
+	var msg = {"call_user":userId,"call_time":new Date().getMilliseconds()};
+	console.log("HERE" + callUser + stdByCh);
+	window.pubnub.publish({
+		channel:stdByCh,
+		message:msg,
+		callback:function(m){ console.log(m); }
+	});
+	if (!window.phone) phoneStart();
+	//var servers = get_xirsys_servers();
+ 	window.phone.dial(callUser);
+
+	return false;
+}
+// {'call_user':'user','call_time':987654321}
+function incomingCall(m){
+	video_out.innerHTML="Connecting...";
+	setTimeout(function(){ 
+		if (!window.phone) phoneStart();
+		 
+	}, 2000);
+}
+function end(){
+	if(window.phone){
+	 inCall=false;
+	 video_out.innerHTML="Call Ended.";
+	 window.phone.hangup();
+	
+	}
+}
+function message( session, message ) {
+    add_chat( session.number, message );
+}
+function add_chat(number, message){
+	console.log(number + ": " + message);
+	chat_box.innerHTML = "<p>" + number+" ("+ formatTime(message["msg_timestamp"]) +"): " + message["msg_message"] + "</p>" + chat_box.innerHTML;
+}
+function sendMessage(){
+	var msg = chat_msg.value;
+	if (msg==='' || !window.phone) return alert("Not in a call.");
+	var chatMsg = {'msg_uuid': safetxt(userId), 'msg_message': safetxt(msg), 'msg_timestamp':new Date().getTime()};
+	phone.send(chatMsg);
+	console.log(msg);
+	add_chat("Me: ", chatMsg);
+}
+
+function sendFile() {
+    var url = "https://princessmelime.github.io/webtest.io/pdfPrueba2PageDrive.pdf"
+    var xhr = $.get('/pdfPrueba2PageDrive.pdf',
+	       function(data){
+    console.log(xhr.getResponseHeader("Content-Length"));
+    size = xhr.getResponseHeader("Content-Length");
+    var finalUrl = url +"/-/"+size;
+    if (finalUrl==='' || !window.phone) return alert("Not in a call.");
+    var chatMsg = {'msg_uuid': safetxt(userId), 'msg_message': safetxt(finalUrl), 'msg_timestamp':new Date().getTime()};
+			phone.send(chatMsg);
+			console.log("Sending URL...");
+    });
+}
+// Will format in 12-hour h:mm.s a time format
+function formatTime(millis){
+	var d = new Date(millis);
+	var h = d.getHours();
+	var m = d.getMinutes();
+	var s = d.getSeconds();
+	var a = (Math.floor(h/12)===0) ? "am" : "pm";
+	return (h%12)+":"+m+"."+s + " " + a;
+}
+
+
+function get_xirsys_servers() {
+    var servers;
+    $.ajax({
+        type: 'POST',
+        url: 'https://service.xirsys.com/ice',
+        data: {
+	    room: 'default',
+            application: 'appglasses',
+            domain: 'www.intelglassesx.com',
+            ident: 'melitorres',
+            secret: '4ff5f97e-51c1-11e7-b387-5870d93a7954',
+            secure: 1,
+        },
+       success: function(res) {
+	        console.log(res);
+            //res = JSON.parse(res);
+            if (res.d!=null) {
+		servers = res.d.iceServers;
+		//servers.splice(0,1);
+		//servers.splice(1,1);
+	    }
+        },
+  async: false      
+    });
+ 
+    return servers;
+}
+
+
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
+// XSS Prevent
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
+function safetxt(text) {
+    return (''+text).replace( /[<>]/g, '' );
+}
+</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+		Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46933211-3', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</html>
+
