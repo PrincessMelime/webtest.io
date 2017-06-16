@@ -333,7 +333,7 @@ var PHONE = window.PHONE = function(config) {
             var mynumber = config.number;
             var packet   = { hangup:true };
             var message  = { packet:packet, id:sessionid, number:mynumber };
-            var client   = new XMLHttpsRequest();
+            var client   = new XMLHttpRequest();
             var url      = 'https://pubsub.pubnub.com/publish/'
                            + pubkey + '/'
                            + subkey + '/0/'
