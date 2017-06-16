@@ -252,7 +252,7 @@ function login(value){
 					//form.login_submit.disabled = true;
 					//form.username.style.background="#55ff5b";
 					console.log(JSON.stringify(m));
-					//phoneStart();
+					phoneStart();
 				}
 			});
 	        console.log("Subscribed and ready!");
@@ -260,6 +260,7 @@ function login(value){
 	       // login_form.style.display = 'none';  
 		second_part.style.display = 'inline';	 
 		listUserConnected();
+		$("#buttonCall").val{'Wait'});
 	    }
     });
     return false;
@@ -304,6 +305,7 @@ function phoneStart() {
 	//    onaddstream:addRemoteStream
 	});	
 	phone.ready(function(){
+		$("#buttonCall").val{'Call'});
 		console.log("Phone ON!");
 	});
 	phone.receive(function(session){
