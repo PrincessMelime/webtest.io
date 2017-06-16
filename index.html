@@ -9,7 +9,6 @@
    	</script>
     <link href= "css/styles.css">
     <style>
-
         #vid-box{
             color: #bcbcbc;
 	    height: 400px;
@@ -31,16 +30,13 @@
 //    	    position: absolute;
 //	    margin-top: -32px;
 //	}
-
         body{
             background: #eeede9;
  	    color: #2d2d2d;
-	    margin:0;
-	    padding:0;
         }
        div#rtc-demo {
             width: 800px;
-            margin-left: 8px;
+            margin: 0 auto;
             font-family: arial, helvetica, sans-serif;
 	    padding-right: 420px;
  	    box-sizing: border-box;
@@ -48,58 +44,11 @@
 	    background: #eeede9;
  	    color: #2d2d2d;
         }
-	div#tabs{
-		height: 50px;
-  		width: 100%;
-		background: #fff;
-		margin:0;
-		padding:0;
-	}
-	div#logo{ 
-		background: url("img/logo.png");
-    		height: 50px;
-    		width: 150px;
-    		position: absolute;
-    		top: 0;
-		left: 0;
-		bottom:0;
-		
-	}
-        div#title{
-		 display: table;
-		background-color:#2d2d2d;
-		margin:0;
-		padding:0;
-		font-family: arial, helvetica, sans-serif;
-		color: #fff;
-		font-size: 14px;
-		height: 50px;
-  		width: 100%;
-		font-size: 100%;
-		
-		
-		
-		
-	}
-	div#loginOK{
-		
-		background-color:#d8404b;
-		font-family: arial, helvetica, sans-serif;
-		color: #2d2d2d;
-		text-align: center;
-		
-	}
-	span {
-	  padding-left: 20px;
- 	  vertical-align: middle;
- 	  display: table-cell;
-	}
-     //   label {
-     //       display: block;
-     //       margin: 6px 0 2px;
-     //       color: #2d2d2d;
-     //   }
-
+        label {
+            display: block;
+            margin: 6px 0 2px;
+            color: #2d2d2d;
+        }
         input[type="text"]{
             background: #bcbcbc;
             border: none;
@@ -112,7 +61,6 @@
             border-bottom: 1px solid #000000;
             font-family: 'neosansregular', sans-serif;
         }
-
 	select{
 	    background: #bcbcbc;
             height: 40px;
@@ -125,7 +73,6 @@
             font-family: 'neosansregular', sans-serif;
 	    position:relative;
 	}
-
         input[type="submit"] {
             background: #ff0c44;
             border: 1px solid #ff1148;
@@ -139,7 +86,6 @@
             text-transform: uppercase;
             font-family: 'neosansregular', sans-serif;
         }
-
         button {
             font-size: 16px;
             padding: 10px 20px;
@@ -154,37 +100,58 @@
     	    background: #666;
 	    font-family: 'neosansregular', sans-serif;
         }
-
-        
+        h1 {
+            color: #2d2d2d;
+            text-align: center;
+            font-family: 'neosansregular', sans-serif;
+            font-size: 20px;
+        }
 	img{
     	    margin-top: 5px;
     	    float: right;
 	}
 	    
-       			
+	    tabs {
+  		height: 50px;
+  		width: 100%;
+		    background: #fff;}
+  tabs_logo {
+    background: url("/images/logo.png") no-repeat center center scroll transparent;
+    height: 50px;
+    width: 150px;
+    position: absolute;
+    top: 0;
+    left: 0; }
+  	tabs_ul {
+    	display: flex;
+    	margin-left: 160px; }
+   		tabs_ul_li {
+      			padding: 5px 10px;
+      			border-radius: 2px;
+      			margin: 10px 4px; }
+      				tabs_ul_li.active {
+       				 background: #2d2d2d; }
+        			
     </style>
     
 </head>
 <body>
-	<div id="tabs">
-		<div id="logo"></div>
+	<div id="header" >
+		<h1>STREAMING WITH INTEL GLASS</h1>
 	</div>
-	<div id="title" >
-		<span>Calling to Glasses</span>
-	</div><br>
 	<div id="rtc-demo">
 		<div id="vid-box">
  		   <!-- <i id="loading" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>-->
 		</div>
-	<!--	<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
+		<form name="loginForm" id="login" action="#" onsubmit="return login(this);">
 		    <label for="username">User Name:</label>
 		    <input type="text" name="username" id="username" placeholder="Pick a username!"  size="32"/>
 		    <input type="submit" name="login_submit" value="Log In">
-		</form>-->
+		</form>
 		<div id="second-part"  style="display:none">
-		<div id="loginOK" >
-			<b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b>
-		</div><br>
+		<form name="loginOK" id="loginOK" >
+		<font size="3" color="#2d2d2d"><b>User Logged In: <output name ="userLoggedIn" id ="userLogged" ></output></b></font>
+		</form>
 		<form name="callForm" id="call">
 			Make Call:
 			<div id="selectedField" style="margin:2px;">
@@ -207,7 +174,7 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+<script src="https://cdn.pubnub.com/pubnub-3.16.5.js"></script>
 <script src="js/webrtc.js"></script>
 <script> 
 	$("#buttonCall").attr({'disabled':true});
@@ -224,12 +191,12 @@ var pub_key = "pub-c-2d1fdf43-c0f7-46cd-b440-5cff44c1d91d";
 var sub_key = "sub-c-ce8170c2-1ad3-11e7-b284-02ee2ddab7fe";
 var standby_suffix = "-stdby";
 var second_part = document.getElementById("second-part");
-//var login_form = document.getElementById("login");
+var login_form = document.getElementById("login");
 var userlogged = document.getElementById("userLogged");
 var userId = "";
 var callUser="";
 var inCall=false;
-login("CWorkerTest");	
+login("ConnectedWorker");	
 function login(value){
 	userId = value || "Anonymous";
 	var userIdStdBy = userId + standby_suffix;
@@ -252,20 +219,18 @@ function login(value){
 					//form.login_submit.disabled = true;
 					//form.username.style.background="#55ff5b";
 					console.log(JSON.stringify(m));
-					phoneStart();
+					//phoneStart();
 				}
 			});
 	        console.log("Subscribed and ready!");
 	        userLogged.value = userId;
-	       // login_form.style.display = 'none';  
+	        login_form.style.display = 'none';  
 		second_part.style.display = 'inline';	 
 		listUserConnected();
-		$("#buttonCall").val('Wait');
 	    }
     });
     return false;
 }	
-
 function listUserConnected(){
 	var chan = userId + standby_suffix;
 	pubnub.here_now({
@@ -283,19 +248,17 @@ function listUserConnected(){
 				}
 			}
 			$("#selectUser").html(options);
-        		//login_form.style.display = 'none';
+        		login_form.style.display = 'none';
         		second_part.style.display = 'inline';
 		}
 	});
 }
-
 function phoneStart() {
 	
 	var serversXys = get_xirsys_servers();
 	var serverXys= [];
 	//serverXys.push({"url":"turn:flan@35.161.239.237:13478","credential":"concrema"});
 	//serverXys.push({url:'turn:https://poc.cw.inteliot.org:13478?transport=tcp',username:'flan',credential:'concrema'});
-
  
 	var phone = window.phone = PHONE({
 	    number        : userId || "Anonymous", // listen on username line else Anonymous
@@ -305,7 +268,6 @@ function phoneStart() {
 	//    onaddstream:addRemoteStream
 	});	
 	phone.ready(function(){
-		$("#buttonCall").val('Call');
 		console.log("Phone ON!");
 	});
 	phone.receive(function(session){
@@ -325,22 +287,18 @@ function phoneStart() {
 	
 	});
 }
-
 //Adds the remote users video feed to our remote video window.
     function addRemoteStream( obj ){
 	var url = window.URL.createObjectURL(obj.stream);
 	inCall=true;
         video_out.innerHTML="";
-
         $("#vid-box").attr( "src", window.URL.createObjectURL(obj.stream) );
     }
 //jsonCall.put(Constants.JSON_CALL_USER, username);
 //jsonCall.put(Constants.JSON_CALL_TIME, System.currentTimeMillis());
-
 function makeCall(form){
 	if (!window.pubnub) alert("Login First!");
 	//$("#vid-box").removeAttr('style');
-
 	video_out.innerHTML="Connecting...";
 	//Publish to their standby.
 	 callUser = document.getElementById("selectUser").value;
@@ -355,7 +313,6 @@ function makeCall(form){
 	if (!window.phone) phoneStart();
 	//var servers = get_xirsys_servers();
  	window.phone.dial(callUser);
-
 	return false;
 }
 // {'call_user':'user','call_time':987654321}
@@ -389,7 +346,6 @@ function sendMessage(){
 	console.log(msg);
 	add_chat("Me: ", chatMsg);
 }
-
 function sendFile() {
     var url = "https://princessmelime.github.io/webtest.io/pdfPrueba2PageDrive.pdf"
     var xhr = $.get('/pdfPrueba2PageDrive.pdf',
@@ -412,8 +368,6 @@ function formatTime(millis){
 	var a = (Math.floor(h/12)===0) ? "am" : "pm";
 	return (h%12)+":"+m+"."+s + " " + a;
 }
-
-
 function get_xirsys_servers() {
     var servers;
     $.ajax({
@@ -441,9 +395,6 @@ function get_xirsys_servers() {
  
     return servers;
 }
-
-
-
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
 // XSS Prevent
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=->
@@ -463,3 +414,5 @@ function safetxt(text) {
 </script>
 
 </html>
+
+
